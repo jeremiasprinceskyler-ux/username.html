@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			min-height: 100vh;
+			margin: 0;
+			background: linear-gradient(135deg, #232526 0%, #414345 100%);
+			position: relative;
+		}
+		.robot-bg {
+			position: fixed;
+			top: 0; left: 0; width: 100vw; height: 100vh;
+			z-index: 0;
+			pointer-events: none;
+			opacity: 0.25;
+		}
+		.container {
+			max-width: 400px;
+			margin: 80px auto;
+			background: #24a57a;
+			padding: 30px;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+			position: relative;
+			z-index: 1;
+		}
+		.input-group {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			margin-bottom: 22px;
+		}
+		.input-group label {
+			margin-bottom: 6px;
+			font-weight: 500;
+			color: #130e5e;
+			padding-left: 2px;
+		}
+		.input-group input {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 14px 44px 14px 16px;
+			font-size: 1.1em;
+			border: 1.5px solid #0078d7;
+			border-radius: 6px;
+			outline: none;
+			transition: border-color 0.2s, box-shadow 0.2s;
+			background: #b3a92200;
+			display: block;
+		}
+		.input-group input:focus {
+			border-color: #00c3ff;
+			box-shadow: 0 0 0 2px #00c3ff33;
+		}
+		.input-group .icon {
+			position: absolute;
+			right: 16px;
+			top: 38px;
+			font-size: 1.3em;
+			color: #0078d7;
+			pointer-events: none;
+		}
+		button {
+			width: 100%;
+			padding: 10px;
+			background: #0078d7;
+			color: #491c7c;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		button:hover { background: #005fa3; }
+		.error { color: red; margin-top: 10px; }
+		.success { color: green; margin-top: 10px; }
+	</style>
+</head>
+<body>
+	<!-- Left design -->
+	<svg style="position:fixed;left:0;top:0;height:100vh;width:120px;z-index:0;pointer-events:none;" viewBox="0 0 120 800" fill="none">
+		<ellipse cx="60" cy="200" rx="60" ry="180" fill="#00c3ff" opacity="0.18"/>
+		<rect x="10" y="500" width="100" height="180" rx="50" fill="#24a57a" opacity="0.12"/>
+	</svg>
+	<!-- Right design -->
+	<svg style="position:fixed;right:0;top:0;height:100vh;width:120px;z-index:0;pointer-events:none;" viewBox="0 0 120 800" fill="none">
+		<ellipse cx="60" cy="600" rx="60" ry="180" fill="#0078d7" opacity="0.18"/>
+		<rect x="10" y="120" width="100" height="180" rx="50" fill="#491c7c" opacity="0.12"/>
+	</svg>
+	<!-- Existing robot design -->
+	<svg class="robot-bg" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<ellipse cx="400" cy="300" rx="350" ry="250" fill="#00c3ff" opacity="0.15"/>
+		<g>
+			<rect x="320" y="180" width="160" height="160" rx="40" fill="#fff" stroke="#0078d7" stroke-width="8"/>
+			<circle cx="370" cy="230" r="18" fill="#0078d7"/>
+			<circle cx="430" cy="230" r="18" fill="#0078d7"/>
+			<rect x="370" y="270" width="60" height="20" rx="10" fill="#0078d7"/>
+			<rect x="350" y="320" width="100" height="20" rx="10" fill="#0078d7" opacity="0.5"/>
+			<rect x="390" y="360" width="20" height="30" rx="10" fill="#0078d7"/>
+		</g>
+		<g>
+			<rect x="250" y="400" width="40" height="80" rx="20" fill="#0078d7" opacity="0.5"/>
+			<rect x="510" y="400" width="40" height="80" rx="20" fill="#0078d7" opacity="0.5"/>
+		</g>
+	</svg>
+	<div class="container">
+		<h1 id="formTitle">Login</h1>
+		<form id="loginForm">
+			<div class="input-group">
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required autocomplete="username">
+				<span class="icon">&#128100;</span>
+			</div>
+			<div class="input-group">
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" required autocomplete="current-password">
+				<span class="icon">&#128274;</span>
+			</div>
+			<button type="submit">Login</button>
+			<button id="forgotBtn" type="button" style="width:100%; margin:10px 0 0 0; background:#fff; color:#0078d7; border:1.5px solid #0078d7;">Forgot Password?</button>
+			<div style="display: flex; gap: 10px; margin-top: 16px;">
+				<button id="showCreateBtn" type="button" style="flex:1; background:#22b3b3; color:#130e5e; border:1.5px solid #0078d7;">Create Account</button>
+				<button id="showLoginBtn" type="button" style="flex:1; background:#fff; color:#0078d7; border:1.5px solid #0078d7;" onclick="window.open('https://accounts.google.com/signin','_blank')">Sign In</button>
+			</div>
+		</form>
+		<form id="createForm" style="display:none; margin-top:10px;">
+			<div class="input-group">
+				<label for="newUsername">Username:</label>
+				<input type="text" id="newUsername" name="newUsername" required autocomplete="username">
+				<span class="icon">&#128100;</span>
+			</div>
+			<div class="input-group">
+				<label for="newPassword">Password:</label>
+				<input type="password" id="newPassword" name="newPassword" required autocomplete="new-password">
+				<span class="icon">&#128274;</span>
+			</div>
+			<div class="input-group">
+				<label for="confirmPassword">Confirm Password:</label>
+				<input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password">
+				<span class="icon">&#128274;</span>
+			</div>
+			<button type="submit">Create Account</button>
+			<button id="backToLoginBtn" type="button" style="width:100%; margin-top:10px; background:#fff; color:#0078d7; border:1.5px solid #0078d7;">Back to Login</button>
+		</form>
+		<div id="message"></div>
+	</div>
+	<script>
+		const forgotBtn = document.getElementById('forgotBtn');
+		forgotBtn.addEventListener('click', function() {
+			window.location.href = 'change-password.html';
+		});
+		const showLoginBtn = document.getElementById('showLoginBtn');
+
+		showLoginBtn.addEventListener('click', function() {
+			createForm.style.display = 'none';
+			loginForm.style.display = 'block';
+			formTitle.textContent = 'Login';
+			messageDiv.textContent = '';
+		});
+		// Demo credentials
+		const demoUsername = "user123";
+		const demoPassword = "pass123";
+
+		const loginForm = document.getElementById('loginForm');
+		const createForm = document.getElementById('createForm');
+		const formTitle = document.getElementById('formTitle');
+		const showCreateBtn = document.getElementById('showCreateBtn');
+		const backToLoginBtn = document.getElementById('backToLoginBtn');
+		const messageDiv = document.getElementById('message');
+
+		function getSavedAccount() {
+			const account = localStorage.getItem('account');
+			return account ? JSON.parse(account) : null;
+		}
+
+		function saveAccount(username, password) {
+			localStorage.setItem('account', JSON.stringify({ username, password }));
+		}
+
+		loginForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+			const saved = getSavedAccount();
+			if ((username === demoUsername && password === demoPassword) ||
+				(saved && username === saved.username && password === saved.password)) {
+				window.location.href = 'gallery.html';
+			} else {
+				messageDiv.textContent = "Invalid username or password.";
+				messageDiv.className = "error";
+			}
+		});
+
+		showCreateBtn.addEventListener('click', function() {
+			loginForm.style.display = 'none';
+			createForm.style.display = 'block';
+			formTitle.textContent = 'Create Account';
+			messageDiv.textContent = '';
+		});
+
+		backToLoginBtn.addEventListener('click', function() {
+			createForm.style.display = 'none';
+			loginForm.style.display = 'block';
+			formTitle.textContent = 'Login';
+			messageDiv.textContent = '';
+		});
+
+		createForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+			const newUsername = document.getElementById('newUsername').value;
+			const newPassword = document.getElementById('newPassword').value;
+			const confirmPassword = document.getElementById('confirmPassword').value;
+			if (newPassword !== confirmPassword) {
+				messageDiv.textContent = "Passwords do not match.";
+				messageDiv.className = "error";
+				return;
+			}
+			saveAccount(newUsername, newPassword);
+			messageDiv.textContent = "Account created for " + newUsername + "! You can now log in.";
+			messageDiv.className = "success";
+			setTimeout(() => {
+				createForm.style.display = 'none';
+				loginForm.style.display = 'block';
+				formTitle.textContent = 'Login';
+			}, 1200);
+		});
+	</script>
+</body>
+</html>
